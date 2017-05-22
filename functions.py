@@ -2,6 +2,19 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
+
+def artist_songs(artist_id):
+	'''Gets all the song ids, sorted by popularity'''
+	song_ids = []
+	next_page = 0
+	base_url = 'https://genius.com/api'+artist_id+'/songs?sort=popularity'
+	while next_page is not None:
+		url = base_url+'&page='+str(next_page) if next_page!=0 else base_url
+		r = requests.get(url)
+		song_ids += [song['api_path'] for song in r.json()['response']['songs']]
+		next_page = r.json()['response']['next_page']
+	return song_ids
+
 def annotation_content(annotation_id):
 	'''Given the annotation ID, returns a single string with the annotation content'''
 	annotation_url = 'https://genius.com/api/annotations/'+str(annotation_id)
@@ -36,6 +49,13 @@ def annotation_content(annotation_id):
 	annot = re.sub(r'\n+','\n',annot)
 	return annot
 
+def artist_url2id(artist_url):
+	'''Given the artist url, returns the artist ID'''
+	r = requests.get(artist_url)
+	soup = BeautifulSoup(r.text, 'html.parser')
+	artist_id = soup.find_all(name='meta',attrs={'name':'newrelic-resource-path'})[0]['content']
+	return artist_id
+
 def song_id2url(song_id):
 	'''Given the song ID, returns the song url'''
 	song_url = 'https://genius.com/api/songs/'+str(song_id) 
@@ -44,9 +64,9 @@ def song_id2url(song_id):
 	return page_url
 
 
-def song_annotations(page_url):
+def song_annotations(song_url):
 	'''Given the song url, returns a list with all the annotation IDs.'''
-	page = requests.get(page_url)
+	page = requests.get(song_url)
 	html = BeautifulSoup(page.text, "html.parser")
 	annotation_ids = [link['data-id'] for link in html.find_all(name='a',attrs={'class':"referent",'classification':"accepted"})]
 	return annotation_ids
