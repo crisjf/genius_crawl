@@ -3,16 +3,45 @@ import re
 from bs4 import BeautifulSoup
 
 
-def artist_songs(artist_id):
+def artist_songs(artist_id,show_url=False):
 	'''Gets all the song ids, sorted by popularity'''
 	song_ids = []
 	next_page = 0
-	base_url = 'https://genius.com/api'+artist_id+'/songs?sort=popularity'
+	base_url = 'https://genius.com/api'+artist_id+'/songs?sort=popularity&per_page=50'
 	while next_page is not None:
 		url = base_url+'&page='+str(next_page) if next_page!=0 else base_url
+		if show_url:
+			print url
 		r = requests.get(url)
 		song_ids += [song['api_path'] for song in r.json()['response']['songs']]
 		next_page = r.json()['response']['next_page']
+	return song_ids
+
+def artists_all(show_url=False):
+	'''Crawls the site for all the artists' urls'''
+	artists_out = []
+	letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0']
+	for lett in letters:
+		url = 'https://genius.com/artists-index/'+lett
+		if show_url:
+			print url
+		r = requests.get(url)
+		soup = BeautifulSoup(r.text, 'html.parser')
+		artists = soup.find_all(name='a',attrs={'class':"artists_index_list-artist_name"})+soup.find_all(name='ul',attrs={'class':"artists_index_list"})[1].find_all(name='a')
+		artists_out += [link['href'] for link in artists]
+	return artists_out
+
+def top100(show_url=False):
+	song_ids = []
+	next_page=0
+	base_url = 'https://genius.com/api/songs/chart?per_page=50&time_period=all_time'
+	while next_page is not None:
+		url = base_url+'&page='+str(next_page) if next_page!=0 else base_url
+		if show_url:
+			print url
+		r = requests.get(url)
+		next_page = r.json()['response']['next_page']
+		song_ids += [song['item']['api_path'] for song in r.json()['response']['chart_items']]
 	return song_ids
 
 def annotation_content(annotation_id):
