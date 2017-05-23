@@ -44,15 +44,12 @@ def top100(show_url=False):
 		song_ids += [song['item']['api_path'] for song in r.json()['response']['chart_items']]
 	return song_ids
 
-def annotation_content(annotation_id):
-	'''Given the annotation ID, returns a single string with the annotation content'''
-	annotation_url = 'https://genius.com/api/annotations/'+str(annotation_id)
-	r = requests.get(annotation_url)
+def parse_content(content):
 	annot = []
-	for a in r.json()['response']['annotation']['body']['dom']['children']:
+	for a in content:
 		note = []
 		if a != '':
-			if (a['tag'] == 'p')|(a['tag'] == 'a'):
+			if (a['tag'] in set(['blockquote','p']))|(a['tag'] == 'a'):
 				for aa in a['children']:
 					if not isinstance(aa, dict):
 						note.append(aa.strip())
@@ -72,10 +69,23 @@ def annotation_content(annotation_id):
 														if not isinstance(aaaaa, dict):
 															note.append(aaaaa.strip())
 														else:
-															print 'Warning: Depth exceeded for annotation:',annotation_id
-		annot.append(''.join(note).strip())
+															print 'Warning: Depth exceeded for content:',content
+			if a['tag']=='blockquote':
+				annot.append('"'+' '.join(note).strip()+'"')
+			else:
+				annot.append(' '.join(note).strip())
 	annot = '\n'.join(annot).strip()
+	annot = annot.replace(' ,',',').replace(' .','.').replace(' ;',';').replace(' :',':')
 	annot = re.sub(r'\n+','\n',annot)
+	annot = re.sub(r' +',' ',annot)
+	return annot
+
+
+def annotation_content(annotation_id):
+	'''Given the annotation ID, returns a single string with the annotation content'''
+	annotation_url = 'https://genius.com/api/annotations/'+str(annotation_id)
+	r = requests.get(annotation_url)
+	annot = parse_content(r.json()['response']['annotation']['body']['dom']['children'])
 	return annot
 
 def genius_url2id(url):
