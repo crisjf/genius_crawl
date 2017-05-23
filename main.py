@@ -1,7 +1,7 @@
 from functions import artists_all,artist_url2id,artist_songs
 
 f = open('songs.tsv',mode='w')
-g = open('log_file.tsv',mode='w')
+g = open('songs_log_file.tsv',mode='w')
 
 artists = artists_all()
 for a_url in artists:

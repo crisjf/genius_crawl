@@ -4,10 +4,15 @@ artist_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[1])
 
 fields = ['followers_count','alternate_names','name','url','api_path','twitter_name']
 outfile = open('artists_metadata.json',mode='w')
+g = open('artists_metadata_log_file.tsv',mode='w')
 for artist_id in artist_ids:
-    url = 'https://genius.com/api'+artist_id
-    r = requests.get(url)
-    data = defaultdict(lambda:'NULL',r.json()['response']['artist'])
-    data_out = {key:data[key] for key in fields}
-    outfile.write( (json.dumps(data_out)+'\n').encode('utf-8'))
+	try:
+		url = 'https://genius.com/api'+artist_id
+		r = requests.get(url)
+		data = defaultdict(lambda:'NULL',r.json()['response']['artist'])
+		data_out = {key:data[key] for key in fields}
+		outfile.write( (json.dumps(data_out)+'\n').encode('utf-8'))
+	except:
+		g.write(artist_id+'\n')
 outfile.close()
+g.close()
