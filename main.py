@@ -6,7 +6,7 @@ g = open('log_file.tsv',mode='w')
 artists = artists_all()
 for a_url in artists:
 	try:
-		a_id = artist_url2id(a_url)
+		a_id = genius_url2id(a_url)
 		songs = artist_songs(a_id)
 		for s in songs:
 			f.write((a_url+'\t'+a_id+'\t'+s+'\n').encode('utf-8'))

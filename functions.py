@@ -78,16 +78,16 @@ def annotation_content(annotation_id):
 	annot = re.sub(r'\n+','\n',annot)
 	return annot
 
-def artist_url2id(artist_url):
-	'''Given the artist url, returns the artist ID'''
-	r = requests.get(artist_url)
+def genius_url2id(url):
+	'''Given the url, returns the ID (works for songs and artists'''
+	r = requests.get(url)
 	soup = BeautifulSoup(r.text, 'html.parser')
 	artist_id = soup.find_all(name='meta',attrs={'name':'newrelic-resource-path'})[0]['content']
 	return artist_id
 
 def song_id2url(song_id):
 	'''Given the song ID, returns the song url'''
-	song_url = 'https://genius.com/api/songs/'+str(song_id) 
+	song_url = 'https://genius.com/api'+song_id
 	r = requests.get(song_url)
 	page_url = "http://genius.com" + r.json()["response"]["song"]["path"]
 	return page_url
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 		print a
 		print '--------'
 
-	song_id = 347866
+	song_id = '/songs/347866'
 	page_url = song_id2url(song_id)
 	print page_url
 	annotations = [(i,annotation_content(i)) for i in song_annotations(page_url)]
