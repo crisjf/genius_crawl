@@ -83,7 +83,7 @@ def parse_content(content):
 
 def annotation_content(annotation_id):
 	'''Given the annotation ID, returns a single string with the annotation content'''
-	annotation_url = 'https://genius.com/api/annotations/'+str(annotation_id)
+	annotation_url = 'https://genius.com/api'+str(annotation_id)
 	r = requests.get(annotation_url)
 	annot = parse_content(r.json()['response']['annotation']['body']['dom']['children'])
 	return annot
@@ -107,7 +107,7 @@ def song_annotations(song_url):
 	'''Given the song url, returns a list with all the annotation IDs.'''
 	page = requests.get(song_url)
 	html = BeautifulSoup(page.text, "html.parser")
-	annotation_ids = [link['data-id'] for link in html.find_all(name='a',attrs={'class':"referent",'classification':"accepted"})]
+	annotation_ids = [ '/annotations/'+str(link['data-id']) for link in html.find_all(name='a',attrs={'class':"referent",'classification':"accepted"})]
 	return annotation_ids
 
 
