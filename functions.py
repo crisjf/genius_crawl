@@ -6,7 +6,7 @@ from collections import defaultdict
 
 def metadata(api_id,fields,show_url=False):
 	'''Gets the song's metadata or the artist's metadata, depending on the provided id. '''	
-	url = 'https://genius.com/api'+song_id
+	url = 'https://genius.com/api'+api_id
 	if show_url:
 		print(url)
 	r = requests.get(url)
