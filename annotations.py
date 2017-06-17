@@ -2,8 +2,6 @@ import pandas as pd
 from functions import *
 song_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[2])
 
-song_ids = list(song_ids)[:10]
-
 outfile = open('songs_annotations.tsv',mode='w')
 g = open('songs_annotations_log_file.tsv',mode='w')
 for song_id in song_ids:
