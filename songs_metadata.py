@@ -1,6 +1,7 @@
 import json,pandas as pd
 from functions import metadata,available_songsmetadata
-song_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[2])
+song_ids = pd.read_csv('songs.tsv',delimiter='\t',header=None)
+song_ids = set(song_ids[song_ids.columns[2]])
 
 fields = ['tracking_data','release_date_components','release_date','stats','annotation_count','comment_count','title',
 		  'spotify_uuid','url','recording_location','primary_artist','featured_artists','producer_artists',

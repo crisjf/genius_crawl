@@ -1,6 +1,7 @@
 import json,pandas as pd
 from functions import metadata,available_artistsmetadata
-artist_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[1])
+artist_ids = pd.read_csv('songs.tsv',delimiter='\t',header=None)
+artist_ids = set(artist_ids[artist_ids.columns[1]])
 
 fields = ['followers_count','alternate_names','name','url','api_path','twitter_name']
 
