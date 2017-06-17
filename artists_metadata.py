@@ -1,16 +1,18 @@
-from collections import defaultdict
-import json,requests,pandas as pd
+import json,pandas as pd
+from functions import metadata,available_artistsmetadata
 artist_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[1])
 
 fields = ['followers_count','alternate_names','name','url','api_path','twitter_name']
-outfile = open('artists_metadata.json',mode='w')
-g = open('artists_metadata_log_file.tsv',mode='w')
+
+artists,nfiles = available_artistsmetadata()
+artist_ids = artist_ids.difference(artists)
+
+outfile = open('artists_metadata.json',mode='w') if nfiles==0 else open('artists_metadata'+str(nfiles+1)+'.json',mode='w')
+g = open('artists_metadata_log_file.tsv',mode='w') if nfiles==0 else open('artists_metadata_log_file'+str(nfiles+1)+'.tsv',mode='w')
+
 for artist_id in artist_ids:
 	try:
-		url = 'https://genius.com/api'+artist_id
-		r = requests.get(url)
-		data = defaultdict(lambda:'NULL',r.json()['response']['artist'])
-		data_out = {key:data[key] for key in fields}
+		data_out = metadata(artist_id,fields)
 		outfile.write( (json.dumps(data_out)+'\n').encode('utf-8'))
 	except:
 		g.write(artist_id+'\n')

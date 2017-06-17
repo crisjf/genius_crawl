@@ -1,7 +1,18 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from collections import defaultdict
 
+def metadata(api_id,fields,show_url=False):
+	'''Gets the song's metadata or the artist's metadata, depending on the provided id. '''	
+	url = 'https://genius.com/api'+song_id
+	if show_url:
+		print(url)
+	r = requests.get(url)
+	#data = defaultdict(lambda:'NULL',r.json()['response']['song'])
+	data = defaultdict(lambda:'NULL',r.json()['response'][api_id.split('/')[1][:-1]])
+	data_out = {key:data[key] for key in fields}
+	return data_out
 
 def artist_songs(artist_id,show_url=False):
 	'''Gets all the song ids, sorted by popularity'''
@@ -44,6 +55,8 @@ def top100(show_url=False):
 		song_ids += [song['item']['api_path'] for song in r.json()['response']['chart_items']]
 	return song_ids
 
+
+
 def parse_content(content):
 	annot = []
 	for a in content:
@@ -80,6 +93,36 @@ def parse_content(content):
 	annot = re.sub(r' +',' ',annot)
 	return annot
 
+
+def available_songsmetadata():
+	'''Finds all the files of the form songs_metadata*.json 
+	and reads all the song_ids found in them'''
+	songs = set([])
+	available_files = [fname for fname in os.listdir('.') if (fname[:14]=='songs_metadata')&(fname.split('.')[-1]=='json')]
+	for fname in available_files:
+		with open(fname) as f:
+			for line in f:
+				try:
+					data = json.loads(line)
+					songs.add(data['api_path'])
+				except:
+					pass
+	return songs,len(available_files)
+
+def available_artistsmetadata():
+	'''Finds all the files of the form artists_metadata*.json 
+	and reads all the artists_ids found in them'''
+	artist = set([])
+	available_files = [fname for fname in os.listdir('.') if (fname[:16]=='artists_metadata')&(fname.split('.')[-1]=='json')]
+	for fname in available_files:
+		with open(fname) as f:
+			for line in f:
+				try:
+					data = json.loads(line)
+					artist.add(data['api_path'])
+				except:
+					pass
+	return artist,len(available_files)
 
 def annotation_content(annotation_id):
 	'''Given the annotation ID, returns a single string with the annotation content'''
