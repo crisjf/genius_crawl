@@ -12,6 +12,7 @@ song_ids = song_ids.difference(songs)
 outfile = open('songs_metadata.json',mode='w') if nfiles==0 else open('songs_metadata'+str(nfiles+1)+'.json',mode='w')
 g = open('songs_metadata_log_file.tsv',mode='w') if nfiles==0 else open('songs_metadata_log_file'+str(nfiles+1)+'.tsv',mode='w')
 
+print 'Found a total of',len(songs),'songs already there'
 print 'Getting data for',len(song_ids),'songs'
 for song_id in song_ids:
 	try:
