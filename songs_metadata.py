@@ -1,4 +1,4 @@
-import json,pandas as pd,os
+import json,pandas as pd
 from functions import metadata,available_songsmetadata
 song_ids = set(pd.read_csv('songs.tsv',delimiter='\t',header=None)[2])
 
