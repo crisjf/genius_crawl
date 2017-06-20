@@ -1,7 +1,7 @@
 import pandas as pd
 from functions import *
 
-songs = pd.read_csv('songs_annotations_sample.tsv',delimiter='\t',header=None,encoding='utf-8')
+songs = pd.read_csv('songs_annotations.tsv',delimiter='\t',header=None,encoding='utf-8')
 songs.columns=['song_url','song_id','annotation_id']
 songs = songs[['song_id','annotation_id']].drop_duplicates()
 songs = pd.DataFrame(songs.groupby('song_id')['annotation_id'].apply(list))
