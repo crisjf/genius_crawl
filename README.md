@@ -34,7 +34,7 @@ song_url	song_id	annotation_id
 annotations_content.py
 
 ```
-Retrieves the content for all the annotations in songs_annotations.tsv and saves it as independent .tsv files (one for each song, with the song_id as the file name) in annotations/.
+Retrieves the content for all the annotations in songs_annotations.tsv and saves it as independent .tsv files (one for each song, with the song_id as the file name) in the folder annotations. (The character "\n" is replaced by "|" in the field annotation_content)
 Each file has the format:
 annotation_id	annotation_content
 ```
