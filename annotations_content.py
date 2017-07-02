@@ -17,5 +17,4 @@ for song_id,row in songs.iterrows():
         f.close()
     except:
         g.write(song_id+'\n')
-    break
 g.close()
