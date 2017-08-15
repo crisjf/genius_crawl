@@ -2,4 +2,3 @@
 *.tsv
 *.pyc
 *.json
-processed_data/*
