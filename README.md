@@ -38,3 +38,10 @@ Retrieves the content for all the annotations in songs_annotations.tsv and saves
 Each file has the format:
 annotation_id	annotation_content
 ```
+
+languages.py
+```
+Open the file 'processed_data/data_song_annotation_merged_20170815.csv' and adds two new columns: lang and is_null.
+lang: Language detected using langdetect package
+is_null: Boolean, if True the annotations are broken
+```
