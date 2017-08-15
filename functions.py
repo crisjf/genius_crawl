@@ -156,6 +156,13 @@ def song_annotations(song_url):
 	return annotation_ids
 
 
+def song_lyrics(song_url):
+	'''Given the song url, returns the lyrics.'''
+	page = requests.get(song_url)
+	html = BeautifulSoup(page.text, "html.parser")
+	lyrics  = html.find_all(name='div',attrs={'class':'lyrics'})[0].text.strip()
+	return lyrics
+
 if __name__ == '__main__':
 	page_url = 'https://genius.com/Billy-joel-we-didnt-start-the-fire-lyrics'
 	print page_url
