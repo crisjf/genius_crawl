@@ -14,13 +14,16 @@ def to_list(s):
     else:
         return sp
 
-data = pd.read_csv('processed_data/data_song_annotation_merged_20170815.csv',index_col=0,encoding='utf-8').sample(10000)
+data = pd.read_csv('processed_data/data_song_annotation_merged_20170815.csv',encoding='utf-8').sample(1000)
 print len(data)
 
 data['lang'] = 'NULL'
 data['is_null'] = True
+data['len_annot'] = 0
+print len(data[data['lang']=='NULL'])
 for index,row in data.iterrows():
     s = to_list(row['annotations'])
+    data.loc[index,'len_annot'] = len(s)
     if len(s)!=0:
         try:
             data.loc[index,'lang'] = detect(s)
