@@ -45,3 +45,9 @@ Open the file 'processed_data/data_song_annotation_merged_20170815.csv' and adds
 lang: Language detected using langdetect package
 is_null: Boolean, if True the annotations are broken
 ```
+
+lyrics.py
+```
+Opens the file 'processed_data/data_song_annotation_merged_20170815_cleaned.csv' and gets the lyrics for the songs in the column Song ID. 
+It saves them as independent .txt files inside the 'lyrics' folder, with the name of the file being the Song ID.
+```
