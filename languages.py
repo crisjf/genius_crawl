@@ -1,7 +1,4 @@
 import pandas as pd
-data = pd.read_csv('processed_data/data_song_annotation_merged_20170815.csv',index_col=0,encoding='utf-8')
-print len(data)
-
 from langdetect import detect
 import re
 def to_list(s):
@@ -16,6 +13,9 @@ def to_list(s):
         return ''
     else:
         return sp
+
+data = pd.read_csv('processed_data/data_song_annotation_merged_20170815.csv',index_col=0,encoding='utf-8').sample(10000)
+print len(data)
 
 data['lang'] = 'NULL'
 data['is_null'] = True
