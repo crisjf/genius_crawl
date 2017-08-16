@@ -1,7 +1,7 @@
 import pandas as pd
 from functions import *
 data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned.csv',encoding='utf-8')
-
+print len(data)
 g = open('lyrics_log_file.tsv',mode='w')
 for i in data['Song ID'].values:
 	try:
