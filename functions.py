@@ -5,16 +5,19 @@ import json
 from bs4 import BeautifulSoup
 from collections import defaultdict
 
-def metadata(api_id,fields,show_url=False):
+def metadata(api_id,fields=None,show_url=False):
 	'''Gets the song's metadata or the artist's metadata, depending on the provided id. '''	
 	url = 'https://genius.com/api'+api_id
 	if show_url:
 		print(url)
 	r = requests.get(url)
-	#data = defaultdict(lambda:'NULL',r.json()['response']['song'])
-	data = defaultdict(lambda:'NULL',r.json()['response'][api_id.split('/')[1][:-1]])
-	data_out = {key:data[key] for key in fields}
-	return data_out
+	data = r.json()['response'][api_id.split('/')[1][:-1]]
+	if fields is None:
+		return data
+	else:
+		data = defaultdict(lambda:'NULL',data)
+		data_out = {key:data[key] for key in fields}
+		return data_out
 
 def artist_songs(artist_id,show_url=False):
 	'''Gets all the song ids, sorted by popularity'''
