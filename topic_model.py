@@ -70,6 +70,8 @@ dictionary = corpora.Dictionary(texts)
 
 print 'Changing the representation of all texts...'
 corpus = [dictionary.doc2bow(text) for text in texts]
+pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
+
 print 'Running the model with',num_topics,'topics...'
 model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
 
