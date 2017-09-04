@@ -3,8 +3,14 @@ from crisjfpy import list_join
 from nltk.stem import WordNetLemmatizer
 from collections import Counter,defaultdict
 from gensim import corpora, models, similarities
+try:
+	import cPickle as pickle
+except:
+	import pickle
+
 num_topics=100
 
+print 'Loading data...'
 data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv',encoding='utf-8')
 data = data[data['prob']>0.5]
 
@@ -66,11 +72,6 @@ print 'Changing the representation of all texts...'
 corpus = [dictionary.doc2bow(text) for text in texts]
 print 'Running the model with',num_topics,'topics...'
 model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
-
-try:
-	import cPickle as pickle
-except:
-	import pickle
 
 pickle.dump(dictionary, open("processed_data/dictionary.p", "wb" ))
 pickle.dump(model_lda , open("processed_data/model_lda.p", "wb" ))
