@@ -52,22 +52,23 @@ def bagofwords(doc):
     bag = [(w,lemm(w,t,lemmatizer),t) for w,t in nltk.pos_tag(nltk.word_tokenize(doc)) if t[0].lower() in parts]
     return [lemma.lower() for w,lemma,t in bag if lemma not in stoplist]
 
+print 'Changing to bag of words representation...'
 texts = [bagofwords(doc) for doc in documents]
 
-#remove the words that appear only once in the whole corpus
+print 'Removing words that occurr only once...'
 frequency = defaultdict(int,Counter(list_join(texts)))
 texts = [[token for token in text if frequency[token] > 1] for text in texts]
 
+print 'Creating dictionary...'
+dictionary = corpora.Dictionary(texts)
 
-dictionary = corpora.Dictionary(texts) #Map words to integer ids (dictionary.token2id is the dictionary)
-
-#Change the representation of all the texts
+print 'Changing the representation of all texts...'
 corpus = [dictionary.doc2bow(text) for text in texts]
-print 'Running the model with ',num_topics,' topics'
+print 'Running the model with',num_topics,'topics...'
 model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
 
 try:
-	import cpickle as pickle
+	import cPickle as pickle
 except:
 	import pickle
 
