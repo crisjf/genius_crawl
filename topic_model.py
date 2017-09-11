@@ -64,14 +64,15 @@ import numpy as np
 print documents[:2]
 texts = [bagofwords(doc) for doc in documents[:2]]
 print texts
-# n = 1000
-# times = []
-# for i in range(10):
-#     np.random.shuffle(documents)
-#     t0 = time.time()
-#     texts = [bagofwords(doc) for doc in documents[:n]]
-#     tf = time.time()
-#     times.append((tf-t0)/float(n))
+n = 10
+times = []
+for i in range(2):
+	print i
+    np.random.shuffle(documents)
+    t0 = time.time()
+    texts = [bagofwords(doc) for doc in documents[:n]]
+    tf = time.time()
+    times.append((tf-t0)/float(n))
 
 # print (len(documents)*np.mean(times))/60.
 
