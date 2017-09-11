@@ -67,8 +67,9 @@ np.random.shuffle(documents)
 n = 1000
 times = []
 for doc in documents[:n]:
+	token = nltk.word_tokenize(doc)
 	t0 = time.time()
-	tokens = nltk.word_tokenize(doc)
+	tagged = nltk.pos_tag(token)
 	# text = bagofwords(doc)
 	tf = time.time()
 	times.append((tf-t0))
