@@ -1,4 +1,4 @@
-import pandas as pd,re,nltk
+import pandas as pd,re,nltk,numpy as np
 from crisjfpy import list_join
 from nltk.stem import WordNetLemmatizer
 from collections import Counter,defaultdict
@@ -11,7 +11,8 @@ except:
 num_topics=100
 
 print 'Loading data...'
-data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv',encoding='utf-8')
+# data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv',encoding='utf-8')
+data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv',encoding='utf-8',dtype={'Music?':bool,'Primary Album':object,'Primary Album ID':np.float64,'Primary Artist':object,'Primary Artist ID':np.float64,'Primary Tag':object,'Primary Tag ID':np.float64,'Song ID':np.float64,'Tag':object,'Title':object,'Unnamed: 0':np.int64,'Unnamed: 0.1':np.int64,'annotations':object,'created_month':object,'is_null':bool,'lang':object,'len_annot':np.int64,'n_annotations':np.int64,'prob':np.float64})
 data = data[data['prob']>0.5]
 
 def removeURL(doc_):
