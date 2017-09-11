@@ -68,7 +68,7 @@ n = 1000
 times = []
 for doc in documents[:n]:
 	t0 = time.time()
-	tokens = word_tokenize(doc)
+	tokens = nltk.word_tokenize(doc)
 	# text = bagofwords(doc)
 	tf = time.time()
 	times.append((tf-t0))
