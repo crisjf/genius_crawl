@@ -61,9 +61,9 @@ def bagofwords(doc):
 print 'Changing to bag of words representation...'
 import time
 import numpy as np
-n = 10
+n = 1000
 times = []
-for i in range(10):
+for i in range(5):
 	print i
 	np.random.shuffle(documents)
 	t0 = time.time()
