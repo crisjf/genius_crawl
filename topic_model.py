@@ -68,7 +68,8 @@ n = 1000
 times = []
 for doc in documents[:n]:
 	t0 = time.time()
-	text = bagofwords(doc)
+	tokens = word_tokenize(doc)
+	# text = bagofwords(doc)
 	tf = time.time()
 	times.append((tf-t0))
 print (len(documents)*np.mean(times))/60.,'minutes'
