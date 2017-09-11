@@ -61,12 +61,9 @@ def bagofwords(doc):
 print 'Changing to bag of words representation...'
 import time
 import numpy as np
-print documents[:2]
-texts = [bagofwords(doc) for doc in documents[:2]]
-print texts
 n = 10
 times = []
-for i in range(2):
+for i in range(10):
 	print i
 	np.random.shuffle(documents)
 	t0 = time.time()
@@ -74,7 +71,7 @@ for i in range(2):
 	tf = time.time()
 	times.append((tf-t0)/float(n))
 
-# print (len(documents)*np.mean(times))/60.
+print (len(documents)*np.mean(times))/60.
 
 # print 'Changing to bag of words representation...'
 # texts = [bagofwords(doc) for doc in documents]
