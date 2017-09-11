@@ -59,21 +59,35 @@ def bagofwords(doc):
     return [lemma.lower() for w,lemma,t in bag if lemma not in stoplist]
 
 print 'Changing to bag of words representation...'
-texts = [bagofwords(doc) for doc in documents]
+import time
+import numpy as np
+n = 10000
+times = []
+for i in range(10):
+    np.random.shuffle(documents)
+    t0 = time.time()
+    texts = [bagofwords(doc) for doc in documents[:n]]
+    tf = time.time()
+    times.append((tf-t0)/float(n))
 
-print 'Removing words that occurr only once...'
-frequency = defaultdict(int,Counter(list_join(texts)))
-texts = [[token for token in text if frequency[token] > 1] for text in texts]
+print (len(documents)*np.mean(times))/60.
 
-print 'Creating dictionary...'
-dictionary = corpora.Dictionary(texts)
+# print 'Changing to bag of words representation...'
+# texts = [bagofwords(doc) for doc in documents]
 
-print 'Changing the representation of all texts...'
-corpus = [dictionary.doc2bow(text) for text in texts]
-pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
+# print 'Removing words that occurr only once...'
+# frequency = defaultdict(int,Counter(list_join(texts)))
+# texts = [[token for token in text if frequency[token] > 1] for text in texts]
 
-print 'Running the model with',num_topics,'topics...'
-model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
+# print 'Creating dictionary...'
+# dictionary = corpora.Dictionary(texts)
 
-pickle.dump(dictionary, open("processed_data/dictionary.p", "wb" ))
-pickle.dump(model_lda , open("processed_data/model_lda.p", "wb" ))
+# print 'Changing the representation of all texts...'
+# corpus = [dictionary.doc2bow(text) for text in texts]
+# pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
+
+# print 'Running the model with',num_topics,'topics...'
+# model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
+
+# pickle.dump(dictionary, open("processed_data/dictionary.p", "wb" ))
+# pickle.dump(model_lda , open("processed_data/model_lda.p", "wb" ))
