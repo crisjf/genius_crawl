@@ -1,9 +1,16 @@
-import os
+import os,sys
 from gensim import corpora, models, similarities
 try:
 	import cPickle as pickle
 except:
 	import pickle
+
+args = sys.argv
+if len(args)<2:
+	print 'Warning: Setting number of topics to default. To change the number of topics run\n>>> python topic_model.py 200'
+	num_topics = 100
+else:
+	num_topics=int(args[1])
 
 print 'Loading texts...'
 texts = pickle.load(open("processed_data/texts.p","rb"))
@@ -24,7 +31,7 @@ else:
 	corpus = [dictionary.doc2bow(text) for text in texts]
 	pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
 
-num_topics=100
+
 print 'Running the model with',num_topics,'topics...'
 model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
 pickle.dump(model_lda , open("processed_data/model_lda_"+str(num_topics)+"topics.p", "wb" ))
