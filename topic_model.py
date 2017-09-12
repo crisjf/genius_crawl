@@ -82,6 +82,7 @@ texts = [bagofwords(doc) for doc in documents]
 print 'Removing words that occurr only once...'
 frequency = defaultdict(int,Counter(list_join(texts)))
 texts = [[token for token in text if frequency[token] > 1] for text in texts]
+pickle.dump(texts, open("processed_data/texts.p", "wb" ))
 
 print 'Creating dictionary...'
 dictionary = corpora.Dictionary(texts)
