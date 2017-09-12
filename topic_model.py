@@ -59,38 +59,39 @@ def bagofwords(doc):
     bag = [(w,lemm(w,t,lemmatizer),t) for w,t in nltk.pos_tag(nltk.word_tokenize(doc)) if t[0].lower() in parts]
     return [lemma.lower() for w,lemma,t in bag if lemma not in stoplist]
 
+
+
+# print 'Timing...'
+# import time
+# import numpy as np
+# np.random.shuffle(documents)
+# n = 1000
+# times = []
+# for doc in documents[:n]:
+# 	token = nltk.word_tokenize(doc)
+# 	t0 = time.time()
+# 	tagged = nltk.pos_tag(token)
+# 	# text = bagofwords(doc)
+# 	tf = time.time()
+# 	times.append((tf-t0))
+# print (len(documents)*np.mean(times))/60.,'minutes'
+
 print 'Changing to bag of words representation...'
-import time
-import numpy as np
-np.random.shuffle(documents)
+texts = [bagofwords(doc) for doc in documents]
 
-n = 1000
-times = []
-for doc in documents[:n]:
-	token = nltk.word_tokenize(doc)
-	t0 = time.time()
-	tagged = nltk.pos_tag(token)
-	# text = bagofwords(doc)
-	tf = time.time()
-	times.append((tf-t0))
-print (len(documents)*np.mean(times))/60.,'minutes'
+print 'Removing words that occurr only once...'
+frequency = defaultdict(int,Counter(list_join(texts)))
+texts = [[token for token in text if frequency[token] > 1] for text in texts]
 
-# print 'Changing to bag of words representation...'
-# texts = [bagofwords(doc) for doc in documents]
+print 'Creating dictionary...'
+dictionary = corpora.Dictionary(texts)
 
-# print 'Removing words that occurr only once...'
-# frequency = defaultdict(int,Counter(list_join(texts)))
-# texts = [[token for token in text if frequency[token] > 1] for text in texts]
+print 'Changing the representation of all texts...'
+corpus = [dictionary.doc2bow(text) for text in texts]
+pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
 
-# print 'Creating dictionary...'
-# dictionary = corpora.Dictionary(texts)
+print 'Running the model with',num_topics,'topics...'
+model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
 
-# print 'Changing the representation of all texts...'
-# corpus = [dictionary.doc2bow(text) for text in texts]
-# pickle.dump(corpus, open("processed_data/corpus.p", "wb" ))
-
-# print 'Running the model with',num_topics,'topics...'
-# model_lda = models.LdaModel(corpus, id2word=dictionary, num_topics=num_topics)
-
-# pickle.dump(dictionary, open("processed_data/dictionary.p", "wb" ))
-# pickle.dump(model_lda , open("processed_data/model_lda.p", "wb" ))
+pickle.dump(dictionary, open("processed_data/dictionary.p", "wb" ))
+pickle.dump(model_lda , open("processed_data/model_lda.p", "wb" ))
