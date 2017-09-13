@@ -97,3 +97,8 @@ print 'Removing words that occurr only once...'
 frequency = defaultdict(int,Counter(list_join(texts)))
 texts = [[token for token in text if frequency[token] > 1] for text in texts]
 pickle.dump(texts, open("processed_data/texts.p", "wb" ))
+
+f = open('processed_data/texts.txt',mode='w')
+for doc in texts:
+    f.write((' '.join(doc)+'\n').encode('utf-8'))
+f.close()

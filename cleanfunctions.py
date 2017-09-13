@@ -21,7 +21,8 @@ def split_annotations(doc):
     '''Splits the annotations'''
     docs = doc[2:-2].replace('|','\n')
     docs = docs.split("', '")
-    docs = [removeURL(annot) for annot in docs]
+    docs = [removeURL(annot).strip() for annot in docs]
+    docs = [annot for annot in docs if annot != '']
     return docs
 
 def word_tokenize(doc):
