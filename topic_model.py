@@ -19,6 +19,7 @@ else:
 
 print 'Number of topics: ',no_topics
 print 'Numer of features:',no_features
+print 'Loading texts...'
 texts = pickle.load(open("processed_data/texts.p","rb"))
 print 'Number of texts:',len(texts)
 documents = [' '.join(t) for t in texts]
