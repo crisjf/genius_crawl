@@ -75,3 +75,17 @@ To load the models run:
 >>> [tfidf,tfidf_vectorizer,nmf] = pickle.load(open("processed_data/nmf_"+str(no_topics)+"_"+str(no_features)+".p","rb"))
 >>> tfidf_feature_names = tfidf_vectorizer.get_feature_names()
 ```
+
+explore_topics.py
+```
+This script is not meant to be run, but rather to be copied and pasted in a notebook.
+
+Loads the topic model, and draws the word distribution for each one of them.
+```
+
+song2topics.py
+```
+This script is not meant to be run, but rather to be copied and pasted in a notebook.
+
+Loads the topic model and the annotations, then it gets the lyrics for a given song and decomposes both the lyrics and the annotations into topics.
+```
