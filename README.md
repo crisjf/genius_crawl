@@ -89,3 +89,12 @@ This script is not meant to be run, but rather to be copied and pasted in a note
 
 Loads the topic model and the annotations, then it gets the lyrics for a given song and decomposes both the lyrics and the annotations into topics.
 ```
+
+search_artist.py
+```
+Takes the list of all the artists in 'processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv' (with prob>=0.5) and tries to link them to their Wikipedia page using johnny5.
+
+The results are written in 'processed_data/artist2wiki.tsv' with the following format:
+	Primary Artist\tPrimary Artist ID\tWiki Title\twdid\tL\tinstance_of
+```
+
