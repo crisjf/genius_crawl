@@ -20,7 +20,7 @@ def _str(s):
 
 def get_feats(row):
     '''Returns a dictionary with the features used for the classifier'''
-    non_artists = {'kingofthedot','rapgenius','geniususers','geniuslists','genius','thebreakfastclub','noisey','dontflop','versusbattle','urltv','udubbnetwork','popgenius','rapgeniuseditors','mtv','entertainmenttonight','theextra','producergenius','xxl','splashmag','top4','#12for12boston','funkvolume','bet','rockgenius','popgenius','rapgeniusranch','outsidethelineswithrapgenius','sciencegenius','rapgeniususers','epicrapbattlesofhistory'} #use only lower case, and no punctuation signs or parenthesis
+    non_artists = {'kingofthedot','rapgenius','geniususers','geniuslists','genius','thebreakfastclub','noisey','dontflop','versusbattle','urltv','udubbnetwork','popgenius','rapgeniuseditors','mtv','entertainmenttonight','theextra','producergenius','xxl','splashmag','top4','#12for12boston','funkvolume','bet','rockgenius','popgenius','rapgeniusranch','outsidethelineswithrapgenius','sciencegenius','rapgeniususers','epicrapbattlesofhistory','grindmodecypher','videogamerapbattles'} #use only lower case, and no punctuation signs or parenthesis
     
     title  = _str(row['Title']).lower()
     artist = _str(row['Primary Artist']).lower()
