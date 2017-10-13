@@ -5,7 +5,7 @@ data = data[data['prob']>0.5]
 
 f = open('processed_data/artist2wiki.tsv',mode='w')
 f.write('Primary Artist\tPrimary Artist ID\tWiki Title\twdid\tL\tinstance_of\n')
-for artist,artist_id in data[['Primary Artist','Primary Artist ID']].drop_duplicates().values[:20]:
+for artist,artist_id in data[['Primary Artist','Primary Artist ID']].drop_duplicates().values:
     out = [artist,str(artist_id)]
     try:
         a = j5.article(artist,slow_connection=True)
