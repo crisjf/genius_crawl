@@ -14,10 +14,18 @@ for artist,artist_id in data[['Primary Artist','Primary Artist ID']].drop_duplic
         a.find_article()
         if a.title() is None:
             a = j5.search(artist)
-        for i in a.wd_prop('P31'):
-            if j5.article(i['id']).title() in instances:
-                out += [a.title(),a.wdid(),str(a.L()),j5.article(i['id']).title()]
-                break
+        if a is not None:
+            for i in a.wd_prop('P31'):
+                if j5.article(i['id']).title() in instances:
+                    out += [a.title(),a.wdid(),str(a.L()),j5.article(i['id']).title()]
+                    break
+        if len(out) == 2:
+            a = j5.search(artist+' music')
+            if a is not None:
+                for i in a.wd_prop('P31'):
+                    if j5.article(i['id']).title() in instances:
+                        out += [a.title(),a.wdid(),str(a.L()),j5.article(i['id']).title()]
+                        break
         if len(out) == 2:
             out += ['NULL','NULL','NULL','NULL']
     except:
