@@ -98,3 +98,17 @@ The results are written in 'processed_data/artist2wiki.tsv' with the following f
 	Primary Artist\tPrimary Artist ID\tWiki Title\twdid\tL\tinstance_of
 ```
 
+artist_origin.py
+```
+Takes the list of all the artists' Wikipedia pages from 'processed_data/artist2wiki.tsv' and gets their place of origin using four possible different fields:
+formation: Wikidata property P740
+work_location: Wikidata property P937
+birth_place: Wikidata property P19
+residence: Wikipedia infobox type 'person' field
+origin: Wikipedia infobox type 'musician' or 'musical artist' field
+
+The results are written in 'processed_data/artist_origin.tsv' with the following format:
+	'Primary Artist\tPrimary Artist ID\tWiki Title\ttag\tPlace Wiki Title\tlat\tlon\n'
+where 'tag' corresponds to which type of field it corresponds to.
+```
+
