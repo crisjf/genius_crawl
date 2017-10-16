@@ -72,9 +72,9 @@ for artist,artist_id,artist_wiki in a2w[['Primary Artist','Primary Artist ID','W
 	out = [artist,str(int(artist_id)),artist_wiki]
 	a = j5.article(artist_wiki)
 	for tag,func in [('formation',formation),('work_location',work_location),('birth_place',birth_place),('residence',residence),('origin',origin)]:
-        p = func(a)
-        if p[0] != 'NULL':
-            f.write(('\t'.join(out+[tag]+p)+'\n').encode('utf-8'))
+		p = func(a)
+		if p[0] != 'NULL':
+			f.write(('\t'.join(out+[tag]+p)+'\n').encode('utf-8'))
 f.close()
 
 
