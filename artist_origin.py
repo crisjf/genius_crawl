@@ -21,6 +21,7 @@ def origin(a):
 		fplace.find_article()
 		pname = fplace.title()
 		lat,lon = fplace.coords()
+		pname = pname if pname is not None else 'NULL'
 		return [pname,str(lat),str(lon)]
 	else:
 		return ['NULL','NULL','NULL']
