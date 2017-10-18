@@ -69,12 +69,20 @@ def birth_place(a):
 f = open('processed_data/artist_origin.tsv',mode='w')
 f.write('Primary Artist\tPrimary Artist ID\tWiki Title\ttag\tPlace Wiki Title\tlat\tlon\n')
 for artist,artist_id,artist_wiki in a2w[['Primary Artist','Primary Artist ID','Wiki Title']].dropna().values:
-	out = [artist,str(int(artist_id)),artist_wiki]
-	a = j5.article(artist_wiki)
-	for tag,func in [('formation',formation),('work_location',work_location),('birth_place',birth_place),('residence',residence),('origin',origin)]:
-		p = func(a)
-		if p[0] != 'NULL':
-			f.write(('\t'.join(out+[tag]+p)+'\n').encode('utf-8'))
+	try:
+		out = [artist,str(int(artist_id)),artist_wiki]
+		a = j5.article(artist_wiki)
+		for tag,func in [('formation',formation),('work_location',work_location),('birth_place',birth_place),('residence',residence),('origin',origin)]:
+			p = func(a)
+			if p[0] != 'NULL':
+				try:
+					f.write(('\t'.join(out+[tag]+p)+'\n').encode('utf-8'))
+				except:
+					print out
+					print tag
+					print p
+	except:
+		print artist,artist_id,artist_wiki
 f.close()
 
 
