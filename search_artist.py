@@ -4,6 +4,7 @@ data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_
 data = data[data['prob']>0.5]
 
 instances = set(['Human','Band (rock and pop)','Musical ensemble','Girl group','Boy band','Side project','Double act','Musical collective','Trio (music)','Pop duo','Cast recording','Quartet','Dance troupe','Collective'])
+btypes = set(['musical artist','person'])
 
 f = open('processed_data/artist2wiki.tsv',mode='w')
 f.write('Primary Artist\tPrimary Artist ID\tWiki Title\twdid\tL\tinstance_of\n')
@@ -19,6 +20,11 @@ for artist,artist_id in data[['Primary Artist','Primary Artist ID']].drop_duplic
                 if j5.article(i['id']).title() in instances:
                     out += [a.title(),a.wdid(),str(a.L()),j5.article(i['id']).title()]
                     break
+            if len(out) == 2:
+                for b in a.infobox().keys():
+                    if b.strip().lower() in btypes:
+                        out += [a.title(),a.wdid(),str(a.L()),b.strip().lower()+"-ibox"]
+                        break
         if len(out) == 2:
             a = j5.search(artist+' music')
             if a is not None:
@@ -26,6 +32,11 @@ for artist,artist_id in data[['Primary Artist','Primary Artist ID']].drop_duplic
                     if j5.article(i['id']).title() in instances:
                         out += [a.title(),a.wdid(),str(a.L()),j5.article(i['id']).title()]
                         break
+                if len(out) == 2:
+                    for b in a.infobox().keys():
+                        if b.strip().lower() in btypes:
+                            out += [a.title(),a.wdid(),str(a.L()),b.strip().lower()+"-ibox"]
+                            break
         if len(out) == 2:
             out += ['NULL','NULL','NULL','NULL']
     except:
