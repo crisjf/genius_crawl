@@ -21,6 +21,8 @@ def origin(a):
 		fplace.find_article()
 		pname = fplace.title()
 		lat,lon = fplace.coords()
+		if (lat=='NA')|(lon=='NA'):
+			lat,lon = fplace.coords(wiki='wd')
 		pname = pname if pname is not None else 'NULL'
 		return [pname,str(lat),str(lon)]
 	else:
@@ -44,6 +46,8 @@ def residence(a):
 		fplace.find_article()
 		pname = fplace.title()
 		lat,lon = fplace.coords()
+		if (lat=='NA')|(lon=='NA'):
+			lat,lon = fplace.coords(wiki='wd')
 		return [pname,str(lat),str(lon)]
 	else:
 		return ['NULL','NULL','NULL']
@@ -54,6 +58,8 @@ def wd_location(a,prop):
 		p.find_article()
 		pname = p.title()
 		lat,lon = p.coords()
+		if (lat=='NA')|(lon=='NA'):
+			lat,lon = p.coords(wiki='wd')
 		return [pname,str(lat),str(lon)]
 	else:
 		return ['NULL','NULL','NULL']
