@@ -2,8 +2,8 @@ import pandas as pd,numpy as np,shapefile
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-sf = shapefile.Reader("MSA/cb_2016_us_cbsa_500k.shp")
-shapes = sf.shapes()
+msa = shapefile.Reader("MSA/cb_2016_us_cbsa_500k.shp")
+msa_shapes = msa.shapes()
 origin = pd.read_csv('processed_data/artist_origin.tsv',encoding='utf-8',delimiter='\t')
 
 def sort_poly(poly):
@@ -19,7 +19,7 @@ out = []
 for pname,lat,lon in origin[['Place Wiki Title','lat','lon']].drop_duplicates().values:
     point = Point(lat, lon)
     found = False
-    for i,shape in enumerate(shapes):
+    for i,shape in enumerate(msa_shapes):
         poly = [(lat,lon) for lon,lat in shape.points]
         polygon = Polygon(poly)
         if polygon.contains(point):
@@ -32,7 +32,7 @@ for pname,lat,lon in origin[['Place Wiki Title','lat','lon']].drop_duplicates().
                 found = True
                 break
     if found:
-        r = sf.record(i)
+        r = msa.record(i)
         msa_name = r[4]
         msa_id = r[2]
         dusa_id = '31000US'+msa_id.split('US')[-1]
