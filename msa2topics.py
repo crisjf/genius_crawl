@@ -7,7 +7,11 @@ no_topics   = 50
 no_features = 5000
 modeltype = 'NMF'
 
+print 'Creating topics for cities using '+modeltype+' with '+str(no_topics)+' topics and '+str(no_features)+' features.'
+
 #Load the topics ################################################
+
+print 'loading topics...'
 
 if ("lda_"+str(no_topics)+"_"+str(no_features)+".p" not in os.listdir('processed_data'))|("nmf_"+str(no_topics)+"_"+str(no_features)+".p" not in os.listdir('processed_data')):
     raise NameError('Model not found')
@@ -30,6 +34,9 @@ else:
     raise NameError('Wrong model type')
 
 #Topic to words #################################################
+
+print 'mapping topics to words...'
+
 topics = []
 ti=0
 for topic in model.components_:
@@ -45,6 +52,8 @@ topics = topics[topics['prob']!=0][['topic','word','prob']]
 topics.to_csv('processed_data/topic2words_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv",encoding='utf-8',index=False)
 
 #Load the annotated songs #######################################
+
+print 'loading annotated songs and artist msa...'
 
 data = pd.read_csv('processed_data/data_song_annotation_merged_20170815_cleaned_classified.csv',encoding='utf-8')
 data = data[data['prob']>0.5]
@@ -66,8 +75,10 @@ data = pd.merge(data,a2m)
 
 #Break songs into topics and merge with cities ##################
 
+print 'breaking songs into topics...'
+
 songs = []
-for songId,annotations in data[['Song ID','annotations']].values[:10]:
+for songId,annotations in data[['Song ID','annotations']].values:
     x   = vectorizer.transform([annotations])
     tsa = model.transform(x)[0]
     if sum(tsa)!=0:
@@ -77,6 +88,8 @@ for songId,annotations in data[['Song ID','annotations']].values[:10]:
         tsa = tsa[tsa['pa']!=0]
         songs.append(tsa[['Song ID','topic','pa']])
 songs = pd.concat(songs)
+
+print 'writing results...'
 
 songs.to_csv('processed_data/songs2topics_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv")
 cities = pd.merge(songs,data[['Song ID','NAME']])
