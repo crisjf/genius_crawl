@@ -66,7 +66,7 @@ data['explained_song'] = [re.sub(r'\n+','\n','\n'.join( split_annotations(doc) )
 
 artist_msa = pd.read_csv('processed_data/artist_origin_msa.csv')
 a2m = pd.DataFrame([],columns=['Primary Artist ID','NAME'])
-tagOrder = ['origin','formation','work_location']
+tagOrder = ['origin','formation','work_location','birth_place']
 for t in tagOrder:
     a2m = pd.concat([a2m,artist_msa[(artist_msa['tag']==t)&(~artist_msa['Primary Artist ID'].isin(set(a2m['Primary Artist ID'].values)))][['Primary Artist ID','NAME']].drop_duplicates()])
 print len(a2m),len(set(a2m['Primary Artist ID']))
@@ -91,7 +91,7 @@ songs = pd.concat(songs)
 
 print 'writing results...'
 
-songs.to_csv('processed_data/songs2topics_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv")
+songs.to_csv('processed_data/songs2topics_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv",index=False,encoding='utf-8')
 cities = pd.merge(songs,data[['Song ID','NAME']])
-cities.groupby(['NAME','topic']).mean()[['pa']].reset_index().groupby(['NAME','topic']).mean().reset_index().to_csv('processed_data/msa2topics_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv")
+cities.groupby(['NAME','topic']).mean()[['pa']].reset_index().groupby(['NAME','topic']).mean().reset_index().to_csv('processed_data/msa2topics_'+modeltype.lower()+"_"+str(no_topics)+"_"+str(no_features)+".csv",index=False,encoding='utf-8')
 
