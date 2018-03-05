@@ -108,7 +108,7 @@ residence: Wikipedia infobox type 'person' field
 origin: Wikipedia infobox type 'musician' or 'musical artist' field
 
 The results are written in 'processed_data/artist_origin.tsv' with the following format:
-	'Primary Artist\tPrimary Artist ID\tWiki Title\ttag\tPlace Wiki Title\tlat\tlon\n'
+	'Primary Artist\tPrimary Artist ID\tWiki Title\ttag\tPlace Wiki Title\tlat\tlon'
 where 'tag' corresponds to which type of field it corresponds to.
 ```
 
@@ -117,6 +117,6 @@ artist_msa.py
 Takes the origins of all the artists from 'processed_data/artist_origin.tsv' and maps them to a US Metropolitan Statistical Area.
 
 The results are written in 'processed_data/artist_origin_msa.csv' with the following format:
-	'Primary Artist,Primary Artist ID,Wiki Title,tag,Place Wiki Title,ccode2,msa_name,msa_id,dusa_id\n'
+	'Primary Artist,Primary Artist ID,Wiki Title,tag,Place Wiki Title,ccode2,msa_name,msa_id,dusa_id'
 where 'msa_id' corresponds to the MSA id, and 'dusa_id' corresponds to the MSA id used in DataUSA.
 ```
