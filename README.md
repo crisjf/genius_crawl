@@ -120,3 +120,13 @@ The results are written in 'processed_data/artist_origin_msa.csv' with the follo
 	'Primary Artist,Primary Artist ID,Wiki Title,tag,Place Wiki Title,ccode2,msa_name,msa_id,dusa_id'
 where 'msa_id' corresponds to the MSA id, and 'dusa_id' corresponds to the MSA id used in DataUSA.
 ```
+
+msa2topics.py
+```
+Takes the results of the topic model and breaks every song into topics. It then aggregates by MSA to assign topics to cities.
+
+The results are written in:
+	'processed_data/topic2words_modeltype_no_topics_no_features.csv': Table that maps topics to songs (topic,word,prob)
+	'processed_data/songs2topics_modeltype_no_topics_no_features.csv': Table that maps Song ID to topic (Song ID,topic,pa)
+	'processed_data/msa2topics_modeltype_no_topics_no_features.csv': Table that maps MSA to topic (NAME,topic,pa)
+```
