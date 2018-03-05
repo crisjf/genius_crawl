@@ -117,6 +117,6 @@ artist_msa.py
 Takes the origins of all the artists from 'processed_data/artist_origin.tsv' and maps them to a US Metropolitan Statistical Area.
 
 The results are written in 'processed_data/artist_origin_msa.csv' with the following format:
-	'Primary Artist,Primary Artist ID,Wiki Title,tag,Place Wiki Title,msa_name,msa_id,dusa_id\n'
+	'Primary Artist,Primary Artist ID,Wiki Title,tag,Place Wiki Title,ccode2,msa_name,msa_id,dusa_id\n'
 where 'msa_id' corresponds to the MSA id, and 'dusa_id' corresponds to the MSA id used in DataUSA.
 ```

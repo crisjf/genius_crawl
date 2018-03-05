@@ -1,45 +1,34 @@
-import pandas as pd,numpy as np,shapefile
+import pandas as pd,geopandas as gpd
 from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
 
-msa = shapefile.Reader("MSA/cb_2016_us_cbsa_500k.shp")
-msa_shapes = msa.shapes()
+a2w = pd.read_csv("processed_data/artist2wiki.tsv",encoding='utf-8',delimiter='\t')
 origin = pd.read_csv('processed_data/artist_origin.tsv',encoding='utf-8',delimiter='\t')
 
-def sort_poly(poly):
-    poly = np.array(poly)
-    center = poly.transpose()
-    center = np.mean(center[0]),np.mean(center[1])
-    poly_center = [(point-center) for point in poly]
-    angles = [np.arctan(y/x) for x,y in poly_center]
-    I = np.argsort(angles)
-    return [poly[i] for i in I]
+msa = gpd.read_file("SHP/cb_2016_us_cbsa_500k.shp")
+msa['DUSA_ID'] = ['31000US'+i for i in msa['GEOID'].astype(str)]
+ctr = gpd.read_file("SHP/SDE_DATA_INT_F7STATES_2004_COUNTRIES_BUFFER2.shp")
 
 out = []
 for pname,lat,lon in origin[['Place Wiki Title','lat','lon']].drop_duplicates().values:
-    point = Point(lat, lon)
-    found = False
-    for i,shape in enumerate(msa_shapes):
-        poly = [(lat,lon) for lon,lat in shape.points]
-        polygon = Polygon(poly)
+    point = Point(lon, lat)
+    country = 'NULL'
+    city = 'NULL'
+    for index,row in ctr.iterrows():
+        polygon = row['geometry']
         if polygon.contains(point):
-            found = True
+            country = row['NA2']
             break
-        if not found:
-            poly = sort_poly(poly)
-            polygon = Polygon(poly)
+    if country =='US':
+        for index,row in msa.iterrows():
+            polygon = row['geometry']
             if polygon.contains(point):
-                found = True
+                city = row['NAME']
                 break
-    if found:
-        r = msa.record(i)
-        msa_name = r[4]
-        msa_id = r[2]
-        dusa_id = '31000US'+msa_id.split('US')[-1]
-        out.append((pname,msa_name,msa_id,dusa_id))
-    else:
-        out.append((pname,'NULL','NULL','NULL'))
-out = pd.DataFrame(out,columns=['Place Wiki Title','msa_name','msa_id','dusa_id'])
-out = pd.merge(origin,out,how='left').fillna('NULL')[['Primary Artist','Primary Artist ID','Wiki Title','tag','Place Wiki Title','msa_name','msa_id','dusa_id']]
+    out.append(( pname,country,city))
+out = pd.DataFrame(out,columns=['Place Wiki Title','ccode2','MSA'])
 
-out.to_csv('processed_data/artist_origin_msa.csv',encoding='utf-8',index=False)
+origin = pd.merge(origin,out,how='left').fillna('NULL').rename(columns={'MSA':'NAME'})
+origin = pd.merge(origin,msa[['NAME','GEOID','DUSA_ID']],how='left').fillna('NULL')
+oritin = origin[[u'Primary Artist',u'Primary Artist ID',u'Wiki Title',u'tag',u'Place Wiki Title',u'ccode2',u'NAME',u'GEOID',u'DUSA_ID']].rename(columns={'NAME':'msaName','GEOID':'msaId','DUSA_ID':'msaDusaId'})
+
+origin.to_csv('processed_data/artist_origin_msa.csv',encoding='utf-8',index=False)
